@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Day - Bucket List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Quicksand', 'sans-serif'],
+                    },
+                    colors: {
+                        cream: '#F3EFEA', // Background color form image
+                        teal: '#2A9D8F',  // Main button color
+                        darkTeal: '#207a70',
+                        softOrange: '#E9C46A',
+                        cardWhite: '#FFFFFF',
+                        textDark: '#264653'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #e5e5e5;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* Smooth animation for checklist */
+        .check-anim {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen font-sans">
+
+    <div class="relative w-full max-w-md sm:h-[850px] h-screen bg-cream sm:rounded-[40px] shadow-2xl overflow-hidden flex flex-col">
+        
+        <div class="pt-6 sm:pt-10 px-6 pb-4 sticky top-0 z-20 bg-cream">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-textDark">DreamBucket</h2>
+                    <p class="text-gray-500 text-sm mb-6">Make every day count.</p>
+                </div>
+                <img src="Logo.png" alt="Logo" class="h-20 w-20 sm:h-35 sm:w-35 -mt-3 sm:-mt-7 -mr-5 sm:-mr-5 object-contain rounded-full ml-8" />
+            </div>
+
+            <div class="bg-white rounded-3xl p-5 shadow-sm flex items-center justify-between mb-2">
+                <div>
+                    <span class="block text-gray-400 text-xs font-bold uppercase tracking-wider">Progress</span>
+                    <span class="text-2xl font-bold text-teal" id="progress-text">0%</span>
+                </div>
+                <div class="flex space-x-2">
+                    <div class="h-10 w-10 rounded-full bg-orange-100 flex items-center justify-center text-softOrange">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="h-10 w-10 rounded-full bg-teal/10 flex items-center justify-center text-teal">
+                        <i class="fas fa-check"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-1 px-6 pb-36 sm:pb-24 overflow-y-auto hide-scrollbar" id="list-container">
+            <div id="empty-state" class="flex flex-col items-center justify-center h-48 text-gray-400">
+                <i class="fas fa-cloud text-4xl mb-3 text-gray-300"></i>
+                <p>Start adding your dreams!</p>
+            </div>
+        </div>
+
+        <div class="fixed bottom-4 left-0 right-0 px-6 flex justify-center z-40 sm:absolute sm:bottom-8" style="padding-bottom: env(safe-area-inset-bottom, 1rem);">
+            <button onclick="openModal()" class="bg-teal hover:bg-darkTeal text-white text-lg font-semibold py-4 px-8 rounded-full shadow-lg w-full flex items-center justify-center gap-2 transition-transform active:scale-95">
+                <i class="fas fa-plus"></i> Add New Dream
+            </button>
+        </div>
+
+        <div id="modal" class="absolute inset-0 bg-black/20 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300 flex items-end">
+            <div class="bg-white w-full h-[68%] sm:h-[70%] rounded-t-[40px] p-6 sm:p-8 flex flex-col shadow-[0_-10px_40px_rgba(0,0,0,0.1)] transform translate-y-full transition-transform duration-300" id="modal-content">
+                
+                <div class="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-8"></div>
+
+                <h3 class="text-xl sm:text-2xl font-bold text-textDark mb-6">Add to Bucket List</h3>
+
+                <p class="text-sm font-bold text-gray-400 mb-3">Choose Icon</p>
+                <div class="flex gap-4 mb-6 overflow-x-auto pb-2 hide-scrollbar">
+                    <button class="icon-btn h-12 w-12 rounded-2xl bg-orange-100 text-softOrange flex-shrink-0 flex items-center justify-center border-2 border-transparent hover:border-softOrange transition" onclick="selectIcon('plane')"><i class="fas fa-plane"></i></button>
+                    <button class="icon-btn h-12 w-12 rounded-2xl bg-blue-100 text-blue-400 flex-shrink-0 flex items-center justify-center border-2 border-transparent hover:border-blue-400 transition" onclick="selectIcon('music')"><i class="fas fa-music"></i></button>
+                    <button class="icon-btn h-12 w-12 rounded-2xl bg-green-100 text-green-500 flex-shrink-0 flex items-center justify-center border-2 border-transparent hover:border-green-500 transition" onclick="selectIcon('mountain')"><i class="fas fa-mountain"></i></button>
+                    <button class="icon-btn h-12 w-12 rounded-2xl bg-purple-100 text-purple-400 flex-shrink-0 flex items-center justify-center border-2 border-transparent hover:border-purple-400 transition" onclick="selectIcon('camera')"><i class="fas fa-camera"></i></button>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-bold text-gray-400 mb-2">Dream Name</label>
+                    <input type="text" id="dream-input" placeholder="e.g. Visit Japan..." class="w-full bg-gray-50 text-textDark font-medium rounded-2xl p-4 focus:outline-none focus:ring-2 focus:ring-teal/50 transition">
+                </div>
+
+                <div class="flex-1"></div>
+
+                <button onclick="addItem()" class="bg-teal text-white font-bold text-lg py-4 rounded-2xl w-full mb-3 shadow-lg shadow-teal/30 active:scale-95 transition">Add Schedule</button>
+                <button onclick="closeModal()" class="text-gray-400 font-bold py-3 w-full">Cancel</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // State
+        let selectedIcon = 'plane';
+        let items = [];
+
+        // DOM Elements
+        const modal = document.getElementById('modal');
+        const modalContent = document.getElementById('modal-content');
+        const listContainer = document.getElementById('list-container');
+        const emptyState = document.getElementById('empty-state');
+        const progressText = document.getElementById('progress-text');
+        const dreamInput = document.getElementById('dream-input');
+
+        // Functions
+        function openModal() {
+            modal.classList.remove('hidden');
+            // Small delay to allow display:block to apply before opacity transition
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('translate-y-full');
+            }, 10);
+            dreamInput.focus();
+        }
+
+        function closeModal() {
+            modal.classList.add('opacity-0');
+            modalContent.classList.add('translate-y-full');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+            dreamInput.value = '';
+        }
+
+        function selectIcon(icon) {
+            selectedIcon = icon;
+            // Visual feedback logic could go here (removing active classes from others)
+            document.querySelectorAll('.icon-btn').forEach(btn => btn.classList.remove('border-gray-400'));
+        }
+
+        function updateProgress() {
+            if (items.length === 0) {
+                progressText.innerText = '0%';
+                return;
+            }
+            const completed = items.filter(i => i.done).length;
+            const percent = Math.round((completed / items.length) * 100);
+            progressText.innerText = `${percent}%`;
+        }
+
+        function renderList() {
+            listContainer.innerHTML = '';
+            
+            if (items.length === 0) {
+                listContainer.appendChild(emptyState);
+            } else {
+                items.forEach((item, index) => {
+                    const div = document.createElement('div');
+                    div.className = `bg-white rounded-3xl p-4 mb-4 shadow-sm flex items-center justify-between check-anim transform transition hover:scale-[1.02] ${item.done ? 'opacity-60 grayscale' : ''}`;
+                    
+                    let iconColorClass = 'text-gray-500 bg-gray-100';
+                    if (item.icon === 'plane') iconColorClass = 'text-softOrange bg-orange-100';
+                    if (item.icon === 'music') iconColorClass = 'text-blue-400 bg-blue-100';
+                    if (item.icon === 'mountain') iconColorClass = 'text-green-500 bg-green-100';
+                    if (item.icon === 'camera') iconColorClass = 'text-purple-400 bg-purple-100';
+
+                    div.innerHTML = `
+                        <div class="flex items-center gap-4">
+                            <div class="h-12 w-12 rounded-2xl ${iconColorClass} flex items-center justify-center text-lg">
+                                <i class="fas fa-${item.icon}"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-textDark ${item.done ? 'line-through' : ''}">${item.text}</h4>
+                                <p class="text-xs text-gray-400">Target: 2025</p>
+                            </div>
+                        </div>
+                        <button onclick="toggleDone(${index})" class="h-8 w-8 rounded-full border-2 ${item.done ? 'bg-teal border-teal text-white' : 'border-gray-200 text-transparent'} flex items-center justify-center transition-all">
+                            <i class="fas fa-check text-xs"></i>
+                        </button>
+                    `;
+                    listContainer.appendChild(div);
+                });
+            }
+            updateProgress();
+        }
+
+        function addItem() {
+            const text = dreamInput.value.trim();
+            if (text) {
+                items.push({
+                    text: text,
+                    icon: selectedIcon,
+                    done: false
+                });
+                renderList();
+                closeModal();
+            }
+        }
+
+        function toggleDone(index) {
+            items[index].done = !items[index].done;
+            renderList();
+        }
+
+        // Close modal on click outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+    </script>
+</body>
+</html>
