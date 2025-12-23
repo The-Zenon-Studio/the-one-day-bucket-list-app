@@ -1,18 +1,18 @@
-# Dawasaka – Bucket List App 🌱
+# One Day – Bucket List App 🌱
 
-**Dawasaka** is a minimalist single-page bucket list web app that helps users save, track, and reflect on dreams they plan to achieve one day.
+**One Day** is a minimalist single-page bucket list web app that helps users capture, track, and reflect on dreams they plan to achieve *one day*.
 
-Built with simplicity, clarity, and clean UI in mind.
+Designed with clarity, simplicity, and a calm modern UI, the app removes distractions and keeps focus on what truly matters.
 
 ---
 
 ## 🔹 Project Overview
 
-- 📌 App Name: **Dawasaka**
-- 🧠 Concept: Bucket List / Life Goals
-- 🧩 Type: Single HTML Page Application
-- 🎨 UI Style: Minimal, modern
-- 🏗️ Developed by: **The-Zenon-Studio**
+- 📌 **App Name:** One Day  
+- 🧠 **Concept:** Bucket List / Life Goals  
+- 🧩 **Type:** Single Page Web Application  
+- 🎨 **UI Style:** Minimal, clean, modern  
+- 🏗️ **Developed by:** The-Zenon-Studio  
 
 ---
 
@@ -23,16 +23,51 @@ Built with simplicity, clarity, and clean UI in mind.
 - Tailwind CSS  
 - Vanilla JavaScript  
 
-No frameworks. No backend. Fast and lightweight.
+No frameworks.  
+No backend.  
+Fast and lightweight.
 
 ---
 
 ## ✨ Features
 
-- Add personal bucket list goals
-- Simple and distraction-free interface
-- Responsive design (mobile-friendly)
-- Lightweight single-page setup
+- Add and manage personal bucket list goals  
+- Simple, distraction-free interface  
+- Fully responsive (mobile-friendly)  
+- Lightweight single-page setup  
+- Offline-ready when used as a PWA  
+
+---
+
+## 📱 APK Availability
+
+**One Day** is built as a web app and can be converted into an Android APK using web wrapper technologies such as:
+
+- Capacitor  
+- Apache Cordova  
+- Android WebView  
+
+This allows the app to be installed and used like a native Android application.
+
+---
+
+## ⬇️ Download
+
+> **Download One Day APK**  
+Lightweight • Offline Ready • No Login Required
+
+🔗 **APK Download Link:**  
+[Download One Day APK](https://your-download-link-here.com/one-day.apk)
+
+*(APK provided via web wrapper conversion)*
+
+---
+
+## 🚀 Getting Started
+
+1. Clone or download the repository  
+2. Open `index.html` in your browser  
+3. Start writing your dreams — one day at a time  
 
 ---
 
@@ -41,4 +76,9 @@ No frameworks. No backend. Fast and lightweight.
 **The-Zenon-Studio**  
 Creative web solutions with clean code and modern UI.
 
+---
 
+## 📄 License
+
+This project is open for learning and personal use.  
+Feel free to explore, modify, and improve.
