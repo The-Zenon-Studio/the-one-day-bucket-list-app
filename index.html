@@ -43,25 +43,18 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         /* Mobile keyboard handling */
-        html, body {
-            height: 100%;
-            position: fixed;
-            width: 100%;
-            overflow: hidden;
+        :root {
+            --kb-inset: 0px;
         }
-        body {
-            display: flex;
+        /* Add extra bottom space equal to keyboard height */
+        #modal {
+            padding-bottom: calc(env(safe-area-inset-bottom, 0px) + var(--kb-inset));
         }
         /* Modal adjustments for mobile keyboard */
         #modal-content {
-            max-height: 85dvh;
+            max-height: calc(100dvh - 40px);
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
-        }
-        @media (max-width: 640px) {
-            #modal-content {
-                max-height: calc(100dvh - 60px);
-            }
         }
     </style>
 </head>
@@ -158,13 +151,7 @@
                 modalContent.classList.remove('translate-y-full');
             }, 10);
             dreamInput.focus();
-            // Scroll icons into view on mobile when keyboard appears
-            setTimeout(() => {
-                const iconSection = document.querySelector('.flex.gap-4.mb-6');
-                if (iconSection) {
-                    iconSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            }, 500);
+            setTimeout(ensureIconAndInputVisible, 150);
         }
 
         function closeModal() {
@@ -249,6 +236,32 @@
         // Close modal on click outside
         modal.addEventListener('click', (e) => {
             if (e.target === modal) closeModal();
+        });
+
+        // Keep icons and input visible when keyboard opens
+        function ensureIconAndInputVisible() {
+            const scrollContainer = modalContent;
+            const iconRow = document.querySelector('#modal-content .flex.gap-4.mb-6');
+            if (scrollContainer && iconRow) {
+                const offset = iconRow.getBoundingClientRect().top - scrollContainer.getBoundingClientRect().top;
+                scrollContainer.scrollTo({ top: Math.max(0, offset - 12), behavior: 'smooth' });
+            }
+        }
+
+        // Adjust layout based on on-screen keyboard height (mobile)
+        (function setupKeyboardInsets() {
+            if (!window.visualViewport) return;
+            const updateInset = () => {
+                const inset = Math.max(0, window.innerHeight - window.visualViewport.height);
+                document.documentElement.style.setProperty('--kb-inset', inset + 'px');
+            };
+            window.visualViewport.addEventListener('resize', updateInset);
+            window.visualViewport.addEventListener('scroll', updateInset);
+            updateInset();
+        })();
+
+        dreamInput.addEventListener('focus', () => {
+            setTimeout(ensureIconAndInputVisible, 100);
         });
 
     </script>
